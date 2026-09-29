@@ -1,0 +1,54 @@
+<!doctype html><html lang="ja"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>東京喰種 設定判別</title>
+<style>body{font-family:sans-serif;max-width:720px;margin:auto;padding:12px;background:#f5f2f2}section{background:white;padding:14px;margin:10px 0;border-radius:12px}input{width:100%;box-sizing:border-box;padding:9px;margin:4px 0 10px}button{width:100%;padding:14px;margin-top:6px;font-weight:bold}.r{font-size:24px;font-weight:bold;text-align:center}small{color:#666}</style>
+<h1>スマスロ 東京喰種 設定判別ツール</h1>
+<section><h2>基本</h2>
+通常時G数<input id=g type=number><br>レミニセンス<input id=cz type=number><br>大喰いの利世<input id=uc type=number><br>AT初当たり<input id=at type=number><br>EPボーナス<input id=ep type=number></section>
+<section><h2>100G以内CZ</h2>100G到達回数（朝イチ1回目除く）<input id=n100 type=number>当選回数<input id=k100 type=number></section>
+<section><h2>リプレイAT直撃</h2>通常時リプレイ回数<input id=nr type=number>直撃回数<input id=kr type=number></section>
+<section><h2>下段リプレイ</h2>全状態G数<input id=ng type=number>下段リプレイ<input id=kg type=number></section>
+<section><h2>裏AT</h2>
+<p><b>① 通常のAT初当たり</b><br>
+AT初当たり回数<input id=nu type=number>
+そのうち裏ATだった回数<input id=ku type=number>
+<small>※有馬貴将ジャッジメント成功経由を除く通常のAT初当たり。</small></p>
+
+<p><b>② 100G以内のAT当選</b><br>
+100G以内に規定G数契機でATに当選した回数<input id=n100u type=number>
+そのうち裏ATだった回数<input id=k100u type=number>
+<small>※「AT終了後100G以内」ではありません。通常時の100G以内の規定G数契機によるAT当選が対象です。</small></p>
+
+<p><b>③ 200G以内のAT当選</b><br>
+200G以内に規定G数契機でATに当選した回数<input id=n200u type=number>
+そのうち裏ATだった回数<input id=k200u type=number>
+<small>※「AT終了後200G以内」ではありません。通常時の200G以内の規定G数契機によるAT当選が対象です。</small></p>
+
+<small>※100G以内・200G以内の裏AT突入率は、通常の初当たりより優遇されています。有馬貴将ジャッジメント成功経由は別抽選です。</small>
+</section>
+<section><h2>AT引き戻し</h2>AT終了<input id=np type=number>引き戻し<input id=kp type=number></section>
+<section><h2>弱チェリーからのCZ当選</h2>
+<p><b>弱チェリーを引いた回数</b><br>
+<input id=wc type=number>
+<small>※通常時・高確時を合計した「弱チェリー」の回数。</small></p>
+
+<p><b>その弱チェリーからCZに当選した回数</b></p>
+<p>通常状態でのCZ当選<input id=wcn type=number><br>
+<small>※通常状態中に弱チェリーを引き、その弱チェリーを契機にCZへ当選した回数。</small></p>
+
+<p>高確状態でのCZ当選<input id=wch type=number><br>
+<small>※高確状態中に弱チェリーを引き、その弱チェリーを契機にCZへ当選した回数。</small></p>
+
+<small>※「弱チェリーを何回引いたか」と「そのうちCZに繋がった回数」を入力します。弱チェリー以外からのCZ当選はここには入れません。</small>
+</section>
+<section><h2>設定示唆</h2>
+CZ終了 梟（4以上）<input id=c4 type=number> 有馬貴将（6）<input id=c6 type=number>
+AT終了 金木＆董香（4以上）<input id=a4 type=number> あんていく全員（6）<input id=a6 type=number>
+月山「存分に楽しもう」（4以上）<input id=m4 type=number>「特別な夜」（6）<input id=m6 type=number>
+246枚OVER（2以上）<input id=p2 type=number>456枚OVER（4以上）<input id=p4 type=number>666枚OVER（6）<input id=p6 type=number>
+</section>
+<section><h2>ナミちゃんトロフィー</h2>銅<input id=t2 type=number>銀<input id=t3 type=number>金<input id=t4 type=number>キリン柄<input id=t5 type=number>虹<input id=t6 type=number></section>
+<section><button onclick="calc()">設定推測を計算</button><button onclick="document.querySelectorAll('input').forEach(x=>x.value='');document.getElementById('out').innerHTML=''">クリア</button></section><div id=out></div>
+<script>
+const A=[394.4,380.5,357,325.9,291.2,261.3],C=[300.5,295.1,287.6,276.7,262.7,251.2],U=[2079.1,1906.5,1722.8,1478.9,1226.6,1074.9],E=[6620.2,5879.7,5114.5,4062.5,3166.7,2639.5],R=[1260.3,1213.6,1170.3,1129.9,1092.3,1024],P=[.0781,.0781,.0938,.1094,.125,.1523],UR=[.011,.0132,.0163,.0219,.0285,.0332],U1=[.0318,.0354,.0393,.044,.0485,.0514],U2=[.0299,.0332,.0369,.0411,.0453,.0477],W=[.0027,.0029,.0031,.0033,.0038,.0043],WH=[.0059,.0063,.0069,.0073,.0083,.0095];
+const v=id=>{const e=document.getElementById(id);return e?(+e.value||0):0}, b=(k,n,p)=>!n?0:(k>n?-Infinity:k*Math.log(p)+(n-k)*Math.log(1-p));
+function calc(){let l=A.map(()=>Math.log(1/6));for(let i=0;i<6;i++){let g=v('g');if(g){l[i]+=b(v('at'),g,1/A[i])+b(v('cz'),g,1/C[i])+b(v('uc'),g,1/U[i])+b(v('ep'),g,1/E[i])}if(v('n100'))l[i]+=b(v('k100'),v('n100'),[.22,.25,.28,.31,.34,.3601][i]);if(v('nr'))l[i]+=b(v('kr'),v('nr'),[1/7600,1/7450,1/7300,1/7150,1/7200,1/7036.8][i]);if(v('ng'))l[i]+=b(v('kg'),v('ng'),1/R[i]);if(v('nu'))l[i]+=b(v('ku'),v('nu'),UR[i]);if(v('n100u'))l[i]+=b(v('k100u'),v('n100u'),U1[i]);if(v('n200u'))l[i]+=b(v('k200u'),v('n200u'),U2[i]);if(v('np'))l[i]+=b(v('kp'),v('np'),P[i]);if(v('wc')){const wn=v('wcn'),wh=v('wch'),total=v('wc');const base=Math.max(0,total-wh-wn);l[i]+=b(wn,base+wn,[.0027,.0029,.0031,.0033,.0038,.0043][i]);l[i]+=b(wh,wh+Math.max(0,total-wn-wh),[.0059,.0063,.0069,.0073,.0083,.0095][i]);}for(const [id,m] of [['c4',4],['c6',6],['a4',4],['a6',6],['m4',4],['m6',6],['p2',2],['p4',4],['p6',6],['t2',2],['t3',3],['t4',4],['t5',5],['t6',6]])if(v(id)&&i+1<m)l[i]=-Infinity}let mx=Math.max(...l),w=l.map(x=>isFinite(x)?Math.exp(x-mx):0),z=w.reduce((a,b)=>a+b,0),q=w.map(x=>100*x/z),j=q.indexOf(Math.max(...q));out.innerHTML='<section><div class=r>設定'+(j+1)+'：'+q[j].toFixed(1)+'%</div>'+q.map((x,i)=>'<div>設定'+(i+1)+'：'+x.toFixed(1)+'%</div>').join('')+'<small>公開値を統合した簡易ベイズ推定。公式期待度ではありません。</small></section>'}
+</script>
